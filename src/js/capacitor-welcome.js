@@ -1,5 +1,9 @@
-import { Browser } from "@capacitor/browser";
 import { SplashScreen } from "@capacitor/splash-screen";
+
+import {
+  BarcodeScanner,
+} from '@capacitor-mlkit/barcode-scanning';
+
 
 window.customElements.define(
   "capacitor-welcome",
@@ -12,35 +16,28 @@ window.customElements.define(
       const root = this.attachShadow({ mode: "open" });
       root.innerHTML = `
     <main>
-      <h1>Capacitor App</h1>
-      <p>
-        This project is used to create a minimal, reproducible example. Just add
-        the affected Capacitor platforms and plugins.
-      </p>
-      <label for="myInput">Website:</label>
-      <input
-        type="text"
-        id="myInput"
-        name="myInput"
-        value="https://capacitorjs.com/"
-      />
+      <h1>Capacitor Reproduction</h1>
+      <div class="barCode1">
+      </div>
+      <div class="barCode2">
+      </div>
       <button id="open-browser">Open Browser</button>
     </main>
     `;
     }
 
-    connectedCallback() {
-      const self = this;
+    async connectedCallback() {
+      const imgBarCode1 = document.querySelector("img.barCode1");
+      const imgBarCode2 = document.querySelector("img.barCode2");
+      const imagePath1 = imgBarCode1.getAttribute("src");
+      const imagePath2 = imgBarCode2.getAttribute("src");
 
-      self.shadowRoot
-        .querySelector("#open-browser")
-        .addEventListener("click", async function (event) {
-          const input = self.shadowRoot.getElementById("myInput").value;
-          if (!input) {
-            return;
-          }
-          await Browser.open({ url: input });
-        });
+      // File Does Not exists:
+      const barCode1 = await BarcodeScanner.readBarcodesFromImage({path: imagePath1, formats: 'CODE_128'})
+      const barCode2 = await BarcodeScanner.readBarcodesFromImage({path: imagePath2, formats: 'CODE_128'})
+
+      console.assert(barCode1 === '50912735')
+      console.assert(barCode2 === '61795020')
     }
   },
 );
