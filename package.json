@@ -17,7 +17,8 @@
     "@capacitor/browser": "latest",
     "@capacitor/core": "latest",
     "@capacitor/ios": "^5.3.0",
-    "@capacitor/splash-screen": "latest"
+    "@capacitor/splash-screen": "latest",
+    "@capawesome/capacitor-file-picker": "^5.1.1"
   },
   "devDependencies": {
     "@capacitor/cli": "latest",
